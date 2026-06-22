@@ -89,9 +89,10 @@ class Model:
         vicini.sort(key=lambda x: x[2]["weight"], reverse=True)
 
         for u,v,peso in vicini:
-            parziale.append(v)
-            self._ricorsione(parziale,end,lun)
-            parziale.pop()
+            if v not in parziale:
+                parziale.append(v)
+                self._ricorsione(parziale,end,lun)
+                parziale.pop()
 
         return self._bestpath, self._bestscore
 
@@ -112,7 +113,7 @@ class Model:
         vicini.sort(key = lambda x: x[2]["weight"], reverse = True)
 
         for u,v,peso in vicini:
-            if v not in parziale:
+            if v not in parziale and self._graph[parziale[-2]][parziale[-1]]["weight"] > self._graph[u][v]["weight"]:
                 parziale.append(v)
                 self._ricorsione(parziale,end,lun)
                 parziale.pop()
